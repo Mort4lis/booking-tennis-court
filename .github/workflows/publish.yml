@@ -1,0 +1,33 @@
+name: Publish to Docker Hub
+
+on:
+  workflow_call:
+    secrets:
+      DOCKERHUB_PASSWORD:
+        required: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Log in to Docker Hub
+        shell: bash
+        env:
+          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+          DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: |
+          printf '%s\n' "${DOCKERHUB_PASSWORD:?Set the DOCKERHUB_PASSWORD secret}" |
+            docker login --username "${DOCKERHUB_USERNAME:?Set the DOCKERHUB_USERNAME variable}" --password-stdin
+
+      - name: Build and push image
+        shell: bash
+        env:
+          DOCKERHUB_IMAGE: ${{ vars.DOCKERHUB_IMAGE }}
+        run: |
+          image="docker.io/${DOCKERHUB_IMAGE:?Set DOCKERHUB_IMAGE to namespace/repository}:${GITHUB_SHA}"
+          docker build --platform linux/amd64 --build-arg "VERSION=${GITHUB_SHA}" --tag "$image" .
+          docker push "$image"

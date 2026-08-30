@@ -1,0 +1,16 @@
+.git
+.github
+.idea
+.vscode
+.agents
+.claude
+bin/
+dist/
+*.md
+!go.mod
+.env
+.env.*
+coverage.out
+coverage.html
+prompts/
+skills-lock.json

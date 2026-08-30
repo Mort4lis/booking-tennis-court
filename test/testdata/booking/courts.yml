@@ -1,0 +1,11 @@
+# Loaded by testutil.LoadFixtures (go-testfixtures): the file name is the
+# table name, each list item a row.
+- id: 1
+  name: "Court A"
+  indoor: false
+  active: true
+
+- id: 2
+  name: "Court B"
+  indoor: true
+  active: true

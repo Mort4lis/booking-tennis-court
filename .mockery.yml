@@ -1,0 +1,24 @@
+# mockery v3 configuration.
+#
+# Mocks are generated next to the interface they implement, in the same package,
+# so tests use them as plain package identifiers (no extra import). Each mock
+# lands in its own file named "<interface>_mocks.go".
+template: testify
+dir: "{{.InterfaceDir}}"
+pkgname: "{{.SrcPackageName}}"
+structname: "{{.Mock}}{{.InterfaceName}}"
+filename: "mocks_test.go"
+force-file-write: true
+recursive: true
+formatter: goimports
+log-level: info
+
+# Ports are declared by their consumer, so each entry below points at the package
+# that owns the interface. Add new interfaces here as the layers grow.
+packages:
+  github.com/Mort4lis/booking-tennis-court/internal/service:
+    config:
+      all: true
+  github.com/Mort4lis/booking-tennis-court/internal/transport:
+    config:
+      all: true
